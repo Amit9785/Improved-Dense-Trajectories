@@ -1,0 +1,11 @@
+Metadata-Version: 2.4
+Name: densetrack
+Version: 1.0
+Home-page: https://github.com/FXPAL/densetrack
+Author: Andreas Girgensohn
+Author-email: andreasg@fxpal.com
+License-File: LICENSE.md
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license-file

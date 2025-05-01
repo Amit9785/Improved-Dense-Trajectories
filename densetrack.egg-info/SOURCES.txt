@@ -1,0 +1,8 @@
+LICENSE.md
+README.md
+setup.py
+densetrack.egg-info/PKG-INFO
+densetrack.egg-info/SOURCES.txt
+densetrack.egg-info/dependency_links.txt
+densetrack.egg-info/top_level.txt
+src/DenseTrackStab.cpp
