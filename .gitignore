@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+venv/
+env/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Data & model files
+*.npy
+*.npz
+*.pkl
+*.h5
+*.pt
+*.ckpt
+*.onnx
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE configs
+.vscode/
+.idea/
+
+# Git LFS tracking
+.gitattributes
