@@ -37,3 +37,4 @@ Thumbs.db
 *.npy
 venv/
 features/
+build/
