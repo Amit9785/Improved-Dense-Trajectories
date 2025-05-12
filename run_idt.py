@@ -171,33 +171,25 @@ def add_row_to_table(data_frame, name, features):
     Adds a row to the data frame.
     If empty, creates the data frame. Otherwise, add name of the video and
     corresponding descriptor's features.
-    :param data_frame: The data frame of a descriptor (HOG/HOF/MBH).
-    :type data_frame: DataFrame
-    :param name: the name of the video.
-    :type name: String
-    :param features: the features of a descriptor (HOG/HOF/MBH)
-    :type features: array_like, shape (D, ) where D is the dimension of the
-                    descriptor.
-    :return: DataFrame with the new row appended.
-    :rtype: DataFrame
     """
     if data_frame.empty:
-        # Create DataFrame with explicit dtypes to avoid FutureWarning
         col_names = ['name'] + [str(i) for i in range(len(features))]
-        # Create dictionary of dtypes: object for name, float64 for features
         dtypes = {'name': 'object'}
         for i in range(len(features)):
-            dtypes[str(i)] = 'float64'
-        # Initialize empty DataFrame with proper dtypes
-        data_frame = pd.DataFrame(columns=col_names).astype(dtypes)
 
-    # Create new row with proper types
+
+            dtypes[str(i)] = 'float64'
+        data_frame = pd.DataFrame(columns=col_names).astype(dtypes)
+    # Create new row dictionary
     new_row_data = {'name': name}
     for i, val in enumerate(features):
-        new_row_data[str(i)]   data_frame,
-        pd.DataFrame([new_row_data], columns=data_frame.columns)
-    ], ignore_index=True)
+        new_row_data[str(i)] = val
+
+    # Append to the DataFrame
+    data_frame = pd.concat([data_frame, pd.DataFrame([new_row_data], columns=data_frame.columns)], ignore_index=True)
+
     return data_frame
+
 
 
 def save_as_csv(data_frame, path):
@@ -248,14 +240,10 @@ def main():
                 if HOG_FISHER_VECTOR:
                     hog_descriptors = read_hog(tracks)
                     hog_fv = fisher_descriptor(hog_descriptors)
-                    # np.save(os.path.join(TARGET_DIRECTORY, name
-                    #                      + '-hog_fv'), hog_fv)
                     hog_df = add_row_to_table(hog_df, name, hog_fv)
                 if HOF_FISHER_VECTOR:
                     hof_descriptors = read_hof(tracks)
                     hof_fv = fisher_descriptor(hof_descriptors)
-                    # np.save(os.path.join(TARGET_DIRECTORY, name
-                    #                      + '-hof_fv'), hof_fv)
                     hof_df = add_row_to_table(hof_df, name, hof_fv)
 
                 if MBH_FISHER_VECTOR:
@@ -264,8 +252,6 @@ def main():
                     mbh_y_fv = fisher_descriptor(mbh_y_descriptors)
 
                     mbh_fv = np.concatenate((mbh_x_fv, mbh_y_fv))
-                    # np.save(os.path.join(TARGET_DIRECTORY, name
-                    #                      + '-mbh_fv'), mbh_fv)
                     mbh_df = add_row_to_table(mbh_df, name, mbh_fv)
 
                 del tracks
@@ -274,9 +260,13 @@ def main():
             if (i+1) % 10 == 0:
                 print(f'{i+1} files were completed.')
 
-            save_as_csv(hog_df, 'features/hog_features.csv')
-            save_as_csv(hof_df, 'features/hof_features.csv')
-            save_as_csv(mbh_df, 'features/mbh_features.csv')
+    # Save CSV files once after processing all videos
+    if HOG_FISHER_VECTOR:
+        save_as_csv(hog_df, 'features/hog_features.csv')
+    if HOF_FISHER_VECTOR:
+        save_as_csv(hof_df, 'features/hof_features.csv')
+    if MBH_FISHER_VECTOR:
+        save_as_csv(mbh_df, 'features/mbh_features.csv')
 
 
 if __name__ == '__main__':
